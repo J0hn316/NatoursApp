@@ -2,6 +2,9 @@ const slugify = require('slugify');
 const mongoose = require('mongoose');
 // const validator = require('validator');
 
+// Video 93 Modelling the Tours
+// Video 150 Modelling Locations (Geo-spatial Data)
+// Video 151 Modelling Tour Guides:Embedding
 const tourSchema = new mongoose.Schema(
   {
     name: {
@@ -84,6 +87,31 @@ const tourSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    startLocation: {
+      // GeoJSON
+      type: {
+        type: String,
+        default: 'Point',
+        enum: ['Point'],
+      },
+      coordinates: [Number],
+      address: String,
+      description: String,
+    },
+    locations: [
+      {
+        type: {
+          type: String,
+          default: 'Point',
+          enum: ['Point'],
+        },
+        coordinates: [Number],
+        address: String,
+        description: String,
+        day: Number,
+      },
+    ],
+    guides: [],
   },
   {
     toJSON: {
@@ -112,6 +140,17 @@ tourSchema.pre('save', function (next) {
   this.slug = slugify(this.name, { lower: true });
   next();
 });
+
+// Video 151 Modelling Tour Guides:Embedding
+// Embedded documents are used to store related data within a single document
+// They are defined using the type property and are stored as a JSON object
+// ----------- Will not be used for this project------------
+// tourSchema.pre('save', async function(next) {
+//   const guidesPromises = this.guides.map(async id => await User.findById(id));
+//   this.guides = await Promise.all(guidesPromises);
+//   next();
+// });
+// ----------- Will not be used for this project ^------------
 
 // tourSchema.post('save', function (doc, next) {
 //    doc is the document that was saved
