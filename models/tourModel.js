@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 // Video 93 Modelling the Tours
 // Video 150 Modelling Locations (Geo-spatial Data)
 // Video 151 Modelling Tour Guides:Embedding
+// Video 152 Modelling Tour Guides: Child Referencing
 const tourSchema = new mongoose.Schema(
   {
     name: {
@@ -12,15 +13,9 @@ const tourSchema = new mongoose.Schema(
       required: [true, 'A tour must have a name'],
       unique: true,
       trim: true,
-      maxlength: [
-        40,
-        'A tour name must have less or equal then 40 characters.',
-      ],
-      minlength: [
-        10,
-        'A tour name must have more or equal then 10 characters.',
-      ],
-      // validate: [validator.isAlpha, 'Tour name must only contain characters'],
+      maxlength: [40, 'A tour name must have less or equal then 40 characters'],
+      minlength: [10, 'A tour name must have more or equal then 10 characters'],
+      // validate: [validator.isAlpha, 'Tour name must only contain characters']
     },
     slug: String,
     duration: {
@@ -36,7 +31,7 @@ const tourSchema = new mongoose.Schema(
       required: [true, 'A tour must have a difficulty'],
       enum: {
         values: ['easy', 'medium', 'difficult'],
-        message: 'Select a valid difficulty: easy, medium, difficult',
+        message: 'Difficulty is either: easy, medium, difficult',
       },
     },
     ratingsAverage: {
@@ -44,6 +39,7 @@ const tourSchema = new mongoose.Schema(
       default: 4.5,
       min: [1, 'Rating must be above 1.0'],
       max: [5, 'Rating must be below 5.0'],
+      set: (val) => Math.round(val * 10) / 10, // 4.666666, 46.6666, 47, 4.7
     },
     ratingsQuantity: {
       type: Number,
@@ -57,10 +53,10 @@ const tourSchema = new mongoose.Schema(
       type: Number,
       validate: {
         validator: function (val) {
-          // this only points to current doc on NEW document creation.
+          // this only points to current doc on NEW document creation
           return val < this.price;
         },
-        message: 'Discount price ({VALUE}) must be less than original price',
+        message: 'Discount price ({VALUE}) should be below regular price',
       },
     },
     summary: {
@@ -111,15 +107,16 @@ const tourSchema = new mongoose.Schema(
         day: Number,
       },
     ],
-    guides: [],
+    guides: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: 'User',
+      },
+    ],
   },
   {
-    toJSON: {
-      virtuals: true,
-    },
-    toObject: {
-      virtuals: true,
-    },
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
   }
 );
 
@@ -138,6 +135,15 @@ tourSchema.virtual('durationWeeks').get(function () {
 // Middleware functions are defined using the pre and post methods
 tourSchema.pre('save', function (next) {
   this.slug = slugify(this.name, { lower: true });
+  next();
+});
+
+// Video 153 Populating Tour Guides
+tourSchema.pre(/^find/, function (next) {
+  this.populate({
+    path: 'guides',
+    select: '-__v -passwordChangedAt',
+  });
   next();
 });
 
