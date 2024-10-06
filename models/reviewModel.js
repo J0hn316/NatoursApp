@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Tour = require('./tourModel');
 
 // Video 154 Modelling Reviews: Parent Referencing
 // Create a Review model with the following:
@@ -12,7 +13,6 @@ const reviewSchema = new mongoose.Schema(
     review: {
       type: String,
       required: [true, 'Review cannot be empty'],
-      trim: true,
     },
     rating: {
       type: Number,
@@ -40,5 +40,8 @@ const reviewSchema = new mongoose.Schema(
   }
 );
 
+// Video 156 Populating Reviews
+
 const Review = mongoose.model('Review', reviewSchema);
+
 module.exports = Review;

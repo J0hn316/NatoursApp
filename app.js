@@ -9,6 +9,7 @@ const mongoSanitize = require('express-mongo-sanitize');
 const AppError = require('./utils/appError');
 const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
+const reviewRouter = require('./routes/reviewRouter');
 const deepSanitize = require('./utils/deepSanitize');
 const globalErrorHandler = require('./controllers/errorController');
 
@@ -71,6 +72,8 @@ app.use(express.static(`${__dirname}/public`));
 // Routes
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
+// Video 155 Creating and Getting Reviews
+app.use('/api/v1/reviews', reviewRouter);
 
 // Video 112 Handling Unhandled Routes
 // Video 115 Better Errors and Refactoring
