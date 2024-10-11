@@ -1,4 +1,5 @@
 const Tour = require('../models/tourModel');
+const factory = require('./handlerFactory');
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 const APIFeatures = require('../utils/apiFeatures');
@@ -42,9 +43,10 @@ exports.getAllTours = catchAsync(async (req, res, next) => {
 // Video 90 Reading Documents
 // Video 116 Catching Errors in Async Functions
 // Video 117 Adding 404 Not Found Errors
+// Video 157 Virtual Populate Tours and Reviews
 exports.getTourById = catchAsync(async (req, res, next) => {
   const id = req.params.id;
-  const tour = await Tour.findById(id);
+  const tour = await Tour.findById(id).populate('reviews');
 
   if (!tour) {
     return next(new AppError('Tour not found with this ID', 404));
@@ -98,19 +100,22 @@ exports.updateTour = catchAsync(async (req, res, next) => {
 
 // Video 116 Catching Errors in Async Functions
 // Video 117 Adding 404 Not Found Errors
-exports.deleteTour = catchAsync(async (req, res, next) => {
-  const id = req.params.id;
-  const tour = await Tour.findByIdAndDelete(id);
+// exports.deleteTour = catchAsync(async (req, res, next) => {
+//   const id = req.params.id;
+//   const tour = await Tour.findByIdAndDelete(id);
 
-  if (!tour) {
-    return next(new AppError('No tour found with that ID', 404));
-  }
+//   if (!tour) {
+//     return next(new AppError('No tour found with that ID', 404));
+//   }
 
-  res.status(204).json({
-    status: 'success',
-    data: null,
-  });
-});
+//   res.status(204).json({
+//     status: 'success',
+//     data: null,
+//   });
+// });
+
+// Video 161 Building Handler Factory Functions: Delete
+exports.deleteTour = factory.deleteOne(Tour);
 
 // Video 102 Aggregation Pipeline: Matching and Grouping
 // Video 116 Catching Errors in Async Functions

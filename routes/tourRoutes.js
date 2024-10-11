@@ -14,8 +14,13 @@ const {
   getMonthlyPlan,
 } = require('../controllers/tourController');
 
+const reviewRouter = require('../routes/reviewRoutes');
+
 // Video 64 Param Middleware
 // router.param('id', checkID);
+
+// Video 159 Nested Routes with Express
+router.use('/:tourId/reviews', reviewRouter);
 
 // Video 100 Aliasing
 router.route('/top-5-cheap').get(alisaTopTours, getAllTours);

@@ -41,6 +41,23 @@ const reviewSchema = new mongoose.Schema(
 );
 
 // Video 156 Populating Reviews
+reviewSchema.pre(/^find/, function (next) {
+  // ---- wont work well for this type of application see video 157 ----
+  // this.populate({
+  //   path: 'tour',
+  //   select: 'name',
+  // }).populate({
+  //   path: 'user',
+  //   select: 'name photo',
+  // });
+  // ---- wont work well for this type of application see video 157 ----
+
+  this.populate({
+    path: 'user',
+    select: 'name photo',
+  });
+  next();
+});
 
 const Review = mongoose.model('Review', reviewSchema);
 

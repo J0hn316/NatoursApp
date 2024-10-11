@@ -128,6 +128,16 @@ tourSchema.virtual('durationWeeks').get(function () {
   return this.duration / 7;
 });
 
+// Video 157 Virtual Populate Tours and Reviews
+// Virtual populate is used to populate the reviews field with the reviews of the tour
+// It is used to simplify the data retrieval process and reduce the amount of data sent over the network
+// Virtual populate is defined using the populate method
+tourSchema.virtual('reviews', {
+  ref: 'Review',
+  foreignField: 'tour',
+  localField: '_id',
+});
+
 // Video 105 Document Middleware
 // Middleware functions are used to perform operations before or after a document is saved or updated
 // They can be used to perform tasks such as validation, data transformation, and logging

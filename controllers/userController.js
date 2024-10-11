@@ -1,6 +1,7 @@
 const User = require('../models/userModel');
-const catchAsync = require('../utils/catchAsync');
+const factory = require('./handlerFactory');
 const AppError = require('../utils/appError');
+const catchAsync = require('../utils/catchAsync');
 
 // Video 139 Updating the current user data
 const filterObj = (obj, ...allowedFields) => {
@@ -96,9 +97,5 @@ exports.updateUser = (req, res) => {
   });
 };
 
-exports.deleteUser = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'This route is not defined',
-  });
-};
+// Video 161 Building Handler Factory Functions: Delete
+exports.deleteUser = factory.deleteOne(User);

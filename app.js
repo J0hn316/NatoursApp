@@ -9,7 +9,7 @@ const mongoSanitize = require('express-mongo-sanitize');
 const AppError = require('./utils/appError');
 const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
-const reviewRouter = require('./routes/reviewRouter');
+const reviewRouter = require('./routes/reviewRoutes');
 const deepSanitize = require('./utils/deepSanitize');
 const globalErrorHandler = require('./controllers/errorController');
 
