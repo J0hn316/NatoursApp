@@ -14,19 +14,11 @@ const filterObj = (obj, ...allowedFields) => {
   return newObj;
 };
 
-// Video 61 then video 63
-// Video 130 Logging in users
-exports.getAllUsers = catchAsync(async (req, res, next) => {
-  const users = await User.find();
-
-  res.status(200).json({
-    status: 'success',
-    results: users.length,
-    data: {
-      users,
-    },
-  });
-});
+// Video 164 Adding a /me Endpoint
+exports.getMe = (req, res, next) => {
+  req.params.id = req.user.id;
+  next();
+};
 
 // Video 139 Updating the current user data
 exports.updateMe = catchAsync(async (req, res, next) => {
@@ -83,19 +75,17 @@ exports.createUser = (req, res) => {
   });
 };
 
-exports.getUserById = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'This route is not defined',
-  });
-};
+// Video 61 then video 63
+// Video 130 Logging in users
+// Video 163 Factory Functions: Reading
+exports.getAllUsers = factory.getAll(User);
 
-exports.updateUser = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'This route is not defined',
-  });
-};
+// Video 163 Factory Functions: Reading
+exports.getUserById = factory.getOne(User);
+
+// Video 162 Factory Functions: Update and Create
+// Do Not update passwords with this.
+exports.updateUser = factory.updateOne(User);
 
 // Video 161 Building Handler Factory Functions: Delete
 exports.deleteUser = factory.deleteOne(User);

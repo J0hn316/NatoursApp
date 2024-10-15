@@ -31,3 +31,47 @@ app.get('/api/v1/tours', limiter, (req, res) => {
     },
   });
 });
+
+// <---Extra Code------>
+
+// Video 65 Chaining Middleware
+// Create a checkBody middleware
+// Check if body contains the name and price property
+// If not, send back 400 (bad request)
+// Add it to the post handler stack
+
+// exports.checkBody = (req, res, next) => {
+//   const name = req.body.name;
+//   const price = req.body.price;
+
+//   if (!name || !price) {
+//     return res.status(400).json({
+//       status: 'fail',
+//       message: 'Missing name or price',
+//     });
+//   }
+//   next();
+// };
+
+// const tours = JSON.parse(
+//   fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`)
+// );
+
+// exports.checkID = (req, res, next, val) => {
+//   const id = req.params.id * 1; // convert the id from string to number
+//   const toursLength = tours.length;
+
+//   if (id > toursLength) {
+//     return res.status(404).json({
+//       status: 'fail',
+//       message: 'Invalid ID',
+//     });
+//   }
+//   next();
+// };
+
+// const tours = await Tour.find()
+//   .where('duration')
+//   .equals(5)
+//   .where('difficulty')
+//   .equals('easy');

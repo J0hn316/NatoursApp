@@ -29,17 +29,25 @@ router.route('/top-5-cheap').get(alisaTopTours, getAllTours);
 router.route('/tour-stats').get(getTourStats);
 
 // Video 103 Aggregation Pipeline:Unwinding and Projecting
-router.route('/monthly-plan/:year').get(getMonthlyPlan);
+// Video 165 Adding Missing Authentication and Authorization
+router
+  .route('/monthly-plan/:year')
+  .get(protect, restrictTo('admin', 'lead-guide', 'guide'), getMonthlyPlan);
 
 // Video 65 Chaining Middleware
 // Video 131 Protecting Tour Routes Part 1
-router.route('/').get(protect, getAllTours).post(createTour);
+// Video 165 Adding Missing Authentication and Authorization
+router
+  .route('/')
+  .get(getAllTours)
+  .post(protect, restrictTo('admin', 'lead-guide'), createTour);
 
 // Video 134 Authorization: User roles and permissions
+// Video 165 Adding Missing Authentication and Authorization
 router
   .route('/:id')
   .get(getTourById)
-  .patch(updateTour)
+  .patch(protect, restrictTo('admin', 'lead-guide'), updateTour)
   .delete(protect, restrictTo('admin', 'lead-guide'), deleteTour);
 
 module.exports = router;
