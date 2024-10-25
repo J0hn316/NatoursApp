@@ -12,6 +12,8 @@ const {
   alisaTopTours,
   getTourStats,
   getMonthlyPlan,
+  getToursWithin,
+  getDistances,
 } = require('../controllers/tourController');
 
 const reviewRouter = require('../routes/reviewRoutes');
@@ -33,6 +35,14 @@ router.route('/tour-stats').get(getTourStats);
 router
   .route('/monthly-plan/:year')
   .get(protect, restrictTo('admin', 'lead-guide', 'guide'), getMonthlyPlan);
+
+// Video 171 Geospatial Queries: Finding Tours within Radius
+router
+  .route('/tours-within/:distance/center/:latlng/unit/:unit')
+  .get(getToursWithin);
+
+// Video 172 Geospatial Aggregation: Calculating Distances
+router.route('/distances/:latlng/unit/:unit').get(getDistances);
 
 // Video 65 Chaining Middleware
 // Video 131 Protecting Tour Routes Part 1

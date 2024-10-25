@@ -72,6 +72,7 @@ app.use(express.static(`${__dirname}/public`));
 // Routes
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
+
 // Video 155 Creating and Getting Reviews
 app.use('/api/v1/reviews', reviewRouter);
 
@@ -86,29 +87,3 @@ app.all('*', (req, res, next) => {
 app.use(globalErrorHandler);
 
 module.exports = app;
-
-// Video 52 handling GET requests
-// app.get('/api/v1/tours', getAllTours);
-
-// Video 54 Responding to URL Parameters
-// app.get('/api/v1/tours/:id', getTourById);
-
-// Video 53 handling POST requests
-// app.post('/api/v1/tours', createTour);
-
-// Video 55 handling PATCH Requests
-// app.patch('/api/v1/tours/:id', updateTour);
-
-// Video 56 handling DELETE Requests
-// app.delete('/api/v1/tours/:id', deleteTour);
-
-// middleware videos 58-60
-// app.use((req, res, next) => {
-//   console.log('Hello from the middleware!');
-//   next();
-// });
-
-// app.use((req, res, next) => {
-//   req.requestTime = new Date().toISOString();
-//   next();
-// });

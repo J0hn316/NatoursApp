@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 // Video 150 Modelling Locations (Geo-spatial Data)
 // Video 151 Modelling Tour Guides:Embedding
 // Video 152 Modelling Tour Guides: Child Referencing
+// Video 170 Preventing Duplicate Reviews
 const tourSchema = new mongoose.Schema(
   {
     name: {
@@ -120,6 +121,13 @@ const tourSchema = new mongoose.Schema(
   }
 );
 
+// Video 167 Improving Read Performance with Indexes
+tourSchema.index({ price: 1, ratingsAverage: -1 });
+tourSchema.index({ slug: 1 });
+
+// Video 171 Geospatial Queries: Finding Tours within Radius
+tourSchema.index({ startLocation: '2dsphere' });
+
 // Video 104 Virtual Properties
 // Virtual properties are not stored in the database, but can be accessed in the model
 // They are used to simplify the data retrieval process and reduce the amount of data sent over the network
@@ -157,22 +165,6 @@ tourSchema.pre(/^find/, function (next) {
   next();
 });
 
-// Video 151 Modelling Tour Guides:Embedding
-// Embedded documents are used to store related data within a single document
-// They are defined using the type property and are stored as a JSON object
-// ----------- Will not be used for this project------------
-// tourSchema.pre('save', async function(next) {
-//   const guidesPromises = this.guides.map(async id => await User.findById(id));
-//   this.guides = await Promise.all(guidesPromises);
-//   next();
-// });
-// ----------- Will not be used for this project ^------------
-
-// tourSchema.post('save', function (doc, next) {
-//    doc is the document that was saved
-//    next is a callback function that is called when the middleware function is finished
-// });
-
 // Video 106 Query Middleware
 // Middleware functions are used to perform operations before or after a query is executed
 // They can be used to perform tasks such as validation, data transformation, and logging
@@ -187,15 +179,6 @@ tourSchema.pre(/^find/, function (next) {
 // next is a callback function that is called when the middleware function is finished
 // console.log(doc);
 // });
-
-// Video 107 Aggregation Middleware
-// Middleware functions are used to perform operations before or after an aggregation pipeline is executed
-// They can be used to perform tasks such as validation, data transformation, and logging
-// Runs before .aggregate()
-tourSchema.pre('aggregate', function (next) {
-  this.pipeline().match({ secretTour: { $ne: true } });
-  next();
-});
 
 const Tour = mongoose.model('Tour', tourSchema);
 module.exports = Tour;

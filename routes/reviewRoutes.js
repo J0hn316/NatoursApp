@@ -4,6 +4,8 @@ const express = require('express');
 // added { mergeParams: true }
 const router = express.Router({ mergeParams: true });
 
+const { protect, restrictTo } = require('../controllers/authController');
+
 const {
   createReview,
   getAllReviews,
@@ -12,8 +14,6 @@ const {
   updateReview,
   getReview,
 } = require('../controllers/reviewController');
-
-const { protect, restrictTo } = require('../controllers/authController');
 
 // Video 165 Adding Missing Authentication and Authorization
 router.use(protect);
